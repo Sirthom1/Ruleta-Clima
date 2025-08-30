@@ -34,6 +34,6 @@ class PlayersController < ApplicationController
     private
 
     def player_params
-        params.expect(player: [ :name, :money])
+        params.expect(player: [ :name, :money ])
     end
 end

@@ -5,6 +5,7 @@
     <tr>
       <th>Nombre</th>
       <th>Dinero</th>
+      <th>Modificar</th>
     </tr>
   </thead>
   <tbody>
@@ -12,6 +13,7 @@
       <tr>
         <td><%= player.name %></td>
         <td><%= number_to_currency(player.money, unit: "$", precision: 0) %></td>
+        <td><%= link_to "Editar", edit_player_path(player) %></td>
       </tr>
     <% end %>
   </tbody>

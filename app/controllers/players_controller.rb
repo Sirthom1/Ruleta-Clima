@@ -18,9 +18,22 @@ class PlayersController < ApplicationController
         end
     end
 
+    def edit
+        @player = Player.find(params[:id])
+    end
+
+    def update
+        @player = Player.find(params[:id])
+        if @player.update(player_params)
+            redirect_to players_path
+        else
+            render :edit, status: :unprocessable_entity
+        end
+    end
+
     private
 
     def player_params
-        params.expect(player: [ :name])
+        params.expect(player: [ :name, :money ])
     end
 end

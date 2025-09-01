@@ -1,0 +1,28 @@
+<h1>Historial de Rondas</h1>
+
+<% @game_rounds.each do |round| %>
+  <h3>Ronda del <%= round.played_at.strftime("%d/%m/%Y %H:%M") %> - Resultado: <%= round.result_color.capitalize %></h3>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Jugador</th>
+        <th>Apuesta</th>
+        <th>Color Apostado</th>
+        <th>Ganó</th>
+        <th>Payout</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% round.bets.each do |bet| %>
+        <tr>
+          <td><%= bet.player.name %></td>
+          <td><%= number_to_currency(bet.amount, unit: "$", precision: 0) %></td>
+          <td><%= bet.bet_color.capitalize %></td>
+          <td><%= bet.won ? "Sí" : "No" %></td>
+          <td><%= number_to_currency(bet.payout, unit: "$", precision: 0) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

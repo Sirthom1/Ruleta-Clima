@@ -3,6 +3,8 @@ class GameRoundsController < ApplicationController
     @game_rounds = GameRound.includes(bets: :player).order(played_at: :desc)
   end
 
+  skip_before_action :verify_authenticity_token, only: [ :spin, :bonus ]
+
   def spin
     RouletteService.spin_roulette
     render plain: "Spin executed at #{Time.now}"

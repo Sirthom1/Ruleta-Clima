@@ -40,10 +40,12 @@ class RouletteService
     end
 
     def self.calculate_bet(money)
+        conservative_bet = ClimateManager.weather_forecast
         if money <= 1000
             money
         else
-            (money * rand(0.08..0.15)).to_i
+            range = conservative_bet ? 0.03..0.07 : 0.08..0.15
+            (money * rand(range)).to_i
         end
     end
 

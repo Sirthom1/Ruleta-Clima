@@ -15,7 +15,7 @@ class WeatherService
     )
 
     if response.code != 200
-        return nil
+        raise "Weather API Error: #{response.code}"
     end
 
     forecast = response.parsed_response["daily"]["data"]

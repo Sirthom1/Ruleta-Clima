@@ -59,3 +59,5 @@ end
 gem "dotenv-rails", groups: [ :development, :test ]
 
 gem "httparty"
+
+gem "cssbundling-rails", "~> 1.4"

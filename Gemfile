@@ -64,5 +64,4 @@ group :development, :test do
   gem "minitest-rails"
 end
 
-gem "pg", group: :production
-gem "sqlite3", ">= 2.1", group: [ :development, :test ]
+gem "pg", "~> 1.1"

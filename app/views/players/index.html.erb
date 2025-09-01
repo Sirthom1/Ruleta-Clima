@@ -1,23 +1,29 @@
-<h1>Lista de Jugadores</h1>
+<div class="p-4 min-vh-100" style="background: url('<%= asset_path("poker-3825828_1280.jpg") %>') no-repeat center center; background-size: cover;">
+  <div class="container py-4">
+    <div class="p-4">
+      <div class="d-flex align-items-center mb-4">
+        <h1 class="text-center flex-grow-1 text-white">Jugadores</h1>
+        <div class="ms-auto">
+          <%= link_to "Agregar Nuevo Jugador", new_player_path, class: "btn btn-success me-2" %>
+          <%= link_to "Ver Historial de Rondas", game_rounds_path, class: "btn btn-primary" %>
+        </div>
+      </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Dinero</th>
-      <th>Modificar</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @players.each do |player| %>
-      <tr>
-        <td><%= player.name %></td>
-        <td><%= number_to_currency(player.money, unit: "$", precision: 0) %></td>
-        <td><%= link_to "Editar", edit_player_path(player) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= link_to "Agregar nuevo jugador", new_player_path %>
-<%= link_to "Ver Rondas de Juego", game_rounds_path %>
+      <div class="row">
+        <% @players.each do |player| %>
+          <div class="col-md-3 mb-3">
+            <div class="card">
+              <div class="card-header">
+                <%= player.name %>
+              </div>
+              <div class="card-body">
+                <p><strong>Dinero:</strong> <%= number_to_currency(player.money, unit: "$", precision: 0) %></p>
+                <%= link_to "Editar", edit_player_path(player), class: "btn btn-warning" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

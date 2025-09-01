@@ -1,30 +1,37 @@
-<%= link_to "Ver Jugadores", players_path %>
+<div class="p-4 min-vh-100" style="background: url('<%= asset_path("poker-3825828_1280.jpg") %>') no-repeat center center; background-size: cover;">
+  <div class="container py-4">
+    <div class="d-flex align-items-center mb-4">
+        <h1 class="text-center flex-grow-1 text-white">Historial de Rondas</h1>
+        <%= link_to "Ver Jugadores", players_path, class: "btn btn-primary ms-auto" %>
+    </div>
 
-<h1>Historial de Rondas</h1>
+    <div class="row">
+        <% @game_rounds.each do |round| %>
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        Ronda jugada el: <%= round.played_at.strftime("%d/%m/%Y %H:%M") %>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Resultado de la ruleta:</strong> <%= round.result_color.capitalize %></p>
 
-<% @game_rounds.each do |round| %>
-  <h3>Ronda del <%= round.played_at.strftime("%d/%m/%Y %H:%M") %> - Resultado: <%= round.result_color.capitalize %></h3>
-  
-  <table>
-    <thead>
-      <tr>
-        <th>Jugador</th>
-        <th>Apuesta</th>
-        <th>Color Apostado</th>
-        <th>Ganó</th>
-        <th>Payout</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% round.bets.each do |bet| %>
-        <tr>
-          <td><%= bet.player.name %></td>
-          <td><%= number_to_currency(bet.amount, unit: "$", precision: 0) %></td>
-          <td><%= bet.bet_color.capitalize %></td>
-          <td><%= bet.won ? "Sí" : "No" %></td>
-          <td><%= number_to_currency(bet.payout, unit: "$", precision: 0) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>
+                        <h6>Apuestas de jugadores:</h6>
+                        <ul class="list-group list-group-flush">
+                        <% round.bets.each do |bet| %>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>
+                            <%= bet.player.name %> apostó <%= number_to_currency(bet.amount, unit: "$", precision: 0) %> a <%= bet.bet_color.capitalize %>
+                            </span>
+                            <span class="badge <%= bet.won ? 'bg-success' : 'bg-danger' %>">
+                            <%= bet.won ? "Ganó #{number_to_currency(bet.payout, unit: "$", precision: 0)}" : "Perdió" %>
+                            </span>
+                        </li>
+                        <% end %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        <% end %>
+    </div>
+  </div>                      
+</div>

@@ -101,7 +101,3 @@ En producción la app usa PostgreSQL en Render.
 En desarrollo usamos SQLite para simplicidad.
 
 No se necesita ejecutar ningún Active Job o tarea extra para usar la app.
-
-
-
-TEST TEST TEST

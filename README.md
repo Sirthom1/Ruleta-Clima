@@ -115,3 +115,6 @@ La aplicación implementa un sistema dinámico de probabilidades que varía seg�
 
 - **TimeOfDayService**: Servicio que determina el período del día (mañana/tarde/noche) y calcula el multiplicador de probabilidad correspondiente.
 - **RouletteService**: Ajusta las probabilidades de los colores de la ruleta según el multiplicador del período del día. Durante la noche, aumenta ligeramente la probabilidad del color verde (mejor pago), mientras que en la mañana la reduce.
+
+# PRUEBA
+ASDASD

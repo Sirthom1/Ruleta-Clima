@@ -8,6 +8,10 @@ El proyecto permite:
 - Cada ronda se ejecuta cada 3 minutos.
 - Cada jugador parte con 10.000 unidades.
 - La dinámica combina resultados de ruleta con efectos del clima, consumidos desde la API de Meteosource.
+- **Nuevo:** Las probabilidades de ganar varían según la hora del día:
+  - **Noche (21:00 - 5:59)**: Mayor probabilidad de ganar (multiplicador 1.3x)
+  - **Tarde (14:00 - 20:59)**: Probabilidad normal (multiplicador 1.0x)
+  - **Mañana (6:00 - 13:59)**: Menor probabilidad de ganar (multiplicador 0.8x)
 
 El proyecto tiene dos modos de uso:
 
@@ -101,3 +105,16 @@ En producción la app usa PostgreSQL en Render.
 En desarrollo usamos SQLite para simplicidad.
 
 No se necesita ejecutar ningún Active Job o tarea extra para usar la app.
+
+---
+## Detalles Técnicos
+
+### Sistema de Probabilidades por Hora del Día
+
+La aplicación implementa un sistema dinámico de probabilidades que varía según el momento del día:
+
+- **TimeOfDayService**: Servicio que determina el período del día (mañana/tarde/noche) y calcula el multiplicador de probabilidad correspondiente.
+- **RouletteService**: Ajusta las probabilidades de los colores de la ruleta según el multiplicador del período del día. Durante la noche, aumenta ligeramente la probabilidad del color verde (mejor pago), mientras que en la mañana la reduce.
+
+# PRUEBA
+ASDASD

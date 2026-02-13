@@ -3,6 +3,16 @@ class PlayersController < ApplicationController
         @players = Player.all
     end
 
+    def search
+        # VULNERABLE: SQL Injection - usando string interpolation directamente
+        if params[:query].present?
+            @players = Player.where("name LIKE '%#{params[:query]}%'")
+        else
+            @players = Player.all
+        end
+        render :index
+    end
+
     def new
         @player = Player.new
     end
@@ -24,11 +34,19 @@ class PlayersController < ApplicationController
 
     def update
         @player = Player.find(params[:id])
-        if @player.update(player_params)
+        # VULNERABLE: Mass assignment - removí strong parameters
+        if @player.update(params[:player])
             redirect_to players_path
         else
             render :edit, status: :unprocessable_entity
         end
+    end
+
+    def admin_update
+        # VULNERABLE: Sin autenticación ni autorización
+        @player = Player.find(params[:id])
+        @player.update(money: params[:money])
+        redirect_to players_path
     end
 
     private

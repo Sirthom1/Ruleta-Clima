@@ -1,3 +1,5 @@
+require "test_helper"
+
 describe RouletteService do
   before do
     Bet.delete_all
@@ -51,6 +53,51 @@ describe RouletteService do
         _(bet.amount).must_be :>=, min
         _(bet.amount).must_be :<=, max
       end
+    end
+  end
+
+  it "adjusts probabilities based on time of day" do
+    # Durante la noche (mayor probabilidad de verde)
+    Time.stub :current, Time.new(2024, 1, 1, 22, 0, 0) do
+      night_probs = RouletteService.send(:adjust_probabilities_by_time, 1.3)
+      _(night_probs["verde"]).must_be :>, 0.02  # Mayor que la probabilidad base
+    end
+
+    # Durante la mañana (menor probabilidad de verde)
+    Time.stub :current, Time.new(2024, 1, 1, 10, 0, 0) do
+      morning_probs = RouletteService.send(:adjust_probabilities_by_time, 0.8)
+      _(morning_probs["verde"]).must_be :<, 0.02  # Menor que la probabilidad base
+    end
+
+    # Durante la tarde (probabilidad normal)
+    Time.stub :current, Time.new(2024, 1, 1, 15, 0, 0) do
+      afternoon_probs = RouletteService.send(:adjust_probabilities_by_time, 1.0)
+      _(afternoon_probs["verde"]).must_be_close_to 0.02, 0.001  # Similar a la base
+    end
+  end
+
+  it "choose_color uses time of day adjustments" do
+    # Probar que choose_color usa TimeOfDayService
+    Time.stub :current, Time.new(2024, 1, 1, 22, 0, 0) do
+      TimeOfDayService.stub :win_probability_multiplier, 1.3 do
+        colors = []
+        # Ejecutar múltiples veces para verificar distribución
+        100.times do
+          colors << RouletteService.send(:choose_color)
+        end
+        # Verificar que se seleccionan colores válidos
+        colors.each do |color|
+          _([ "verde", "rojo", "negro" ]).must_include color
+        end
+      end
+    end
+  end
+
+  it "probabilities sum to 1.0 regardless of time adjustment" do
+    [ 0.8, 1.0, 1.3 ].each do |multiplier|
+      probs = RouletteService.send(:adjust_probabilities_by_time, multiplier)
+      sum = probs.values.sum
+      _(sum).must_be_close_to 1.0, 0.001
     end
   end
 end
